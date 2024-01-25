@@ -1,1 +1,1 @@
-# IaC-Project-using-Terraform-on-the-AWS-Cloud
+# IaC Project using Terraform on the AWS Cloud
