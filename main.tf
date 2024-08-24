@@ -72,11 +72,11 @@ resource "aws_security_group" "instance_security_group" {
 
 # EC2 Instance
 resource "aws_instance" "web_instances" {
-  count                   = 1
-  ami                     = var.ami_id
-  instance_type           = var.instance_type
-  subnet_id               = aws_subnet.public_subnet.id
-  vpc_security_group_ids  = [aws_security_group.instance_security_group.id]
+  count                  = 1
+  ami                    = var.ami_id
+  instance_type          = var.instance_type
+  subnet_id              = aws_subnet.public_subnet.id
+  vpc_security_group_ids = [aws_security_group.instance_security_group.id]
 }
 
 # RDS Security Group
@@ -93,11 +93,6 @@ resource "aws_security_group" "rds_security_group" {
   # Egress: all allowed (stateful) 
 }
 
-# RDS Subnet Group
-resource "aws_db_subnet_group" "rds_subnet_group" {
-  name       = "my-rds-subnet-group"
-  subnet_ids = [aws_subnet.private_subnet.id]
-}
 
 # RDS Instance
 resource "aws_db_instance" "rds_instance" {
@@ -109,11 +104,9 @@ resource "aws_db_instance" "rds_instance" {
   instance_class         = var.rds_instance_type
   username               = var.rds_username
   password               = var.rds_password
-  name                   = "mydatabase"
   parameter_group_name   = "default.mysql5.7"
   skip_final_snapshot    = true
   publicly_accessible    = false
   multi_az               = false
   vpc_security_group_ids = [aws_security_group.rds_security_group.id]
-  subnet_group_name      = aws_db_subnet_group.rds_subnet_group.name
 }
